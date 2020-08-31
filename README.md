@@ -1,8 +1,6 @@
 # node-SQL-boilerplate
 Node SQL sample project
 
-1. Move the order routes to the `./api/orders.js` file. You will need the same imports in the `./api/users.js` routes. When you are done, you can delete the commented order routes in the `server.js`
-
-2. Create `post`, `delete` and `put` routes for orders like it's been done for users.
-
-3. Make sure the order routes are using the error handling middleware by calling the `next` function in every `catch` statement, like it's done for users.
+1. If you haven't done it yet, create __POST__ __PUT__ and __DELETE__ routes for orders
+2. Move the business logic of the orders in the `controllers/orders.js` as it's been done for users.
+3. (OPTIONAL) Look into (sequelize)[https://sequelize.org/master/], an ORM for SQL 
