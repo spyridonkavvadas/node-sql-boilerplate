@@ -1,22 +1,23 @@
 const express = require("express");
+const {
+  getOrders,
+  getOrder,
+  createOrder,
+  updateOrder,
+  deleteOrder
+} = require('../controllers/orders');
+
 const api = express.Router();
 
-const db = require('../dbinit');
+api
+  .route("/")
+  .get(getOrders)
+  .post(createOrder)
 
-api.get("/", (req, res, next) => {
-  db
-    .query('SELECT * FROM orders;')
-    .then(data => res.json(data.rows))
-    .catch(e => next(e));
-});
+api
+  .route('/:id')
+  .get(getOrder)
+  .put(updateOrder)
+  .delete(deleteOrder)
 
-api.get("/:id", (req, res, next) => {
-  const { id } = req.params;
-
-  db
-    .query("SELECT * FROM orders WHERE id=$1;", [id])
-    .then(data => res.json(data.rows))
-    .catch(e => next(e));
-});
-
-module.exports = api; 
+module.exports = api;
