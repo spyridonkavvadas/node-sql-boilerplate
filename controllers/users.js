@@ -32,7 +32,7 @@ const deleteUser = (req, res, next) => {
 
   db
     .query('DELETE FROM users WHERE id=$1;', [id])
-    .then(data => res.status(201).json(data))
+    .then(data => res.json(data))
     .catch(e => next(e));
 };
 
@@ -42,7 +42,7 @@ const updateUser = (req, res, next) => {
 
   db
     .query('UPDATE users SET first_name=$1 WHERE id=$2;', [name, id])
-    .then(data => res.status(201).json(data))
+    .then(data => res.json(data))
     .catch(e => next(e));
 };
 
