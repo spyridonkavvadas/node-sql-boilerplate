@@ -1,49 +1,60 @@
-const db = require('../dbinit');
+const User = require('../models/User');
+//const Order = require('../models/Order');
+//const mongoose = require('mongoose');
+
+//const { ObjectId } = mongoose.Types;
 
 const getUsers = async (req, res, next) => {
   try {
-    const data = await db.query('SELECT * FROM users;');
-    res.json(data.rows)
+    const users = await User.find();
+    res.json({ success: true, msg: 'show all users', data: users })
   } catch(err) {
     next(err)
   }
 }
 
-const getUser = (req, res, next) => {
-  const { id } = req.params;
-
-  db
-    .query("SELECT * FROM users WHERE id=$1;", [id])
-    .then(data => res.json(data.rows))
-    .catch(e => next(e));
+const getUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.json({ success: true, msg: 'show selected user', data: user })
+  } catch(err) {
+    next(err)
+  }
 };
 
-const createUser = (req, res, next) => {
-  const { name, surname, age } = req.body;
+const createUser = async (req, res, next) => {
+  try {
+    const { name, surname, age } = req.body;
+    const user = await User.create({ name, surname, age});
 
-  db
-    .query('INSERT INTO users(first_name, last_name, age) values($1, $2, $3);', [name, surname, age])
-    .then(data => res.status(201).json(data))
-    .catch(e => next(e));
+    res.json({ success: true, msg: 'show new user', data: user })
+  } catch(err) {
+    next(err)
+  }
 };
 
-const deleteUser = (req, res, next) => {
-  const { id } = req.params;
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  db
-    .query('DELETE FROM users WHERE id=$1;', [id])
-    .then(data => res.json(data))
-    .catch(e => next(e));
+    const user = await User.findByIdAndDelete(id);
+    res.json({ success: true, msg: `user with id ${id} deleted`, data: user })
+  } catch(err) {
+    next(err) 
+  }
 };
 
-const updateUser = (req, res, next) => {
-  const { id } = req.params;
-  const { name, surname, age } = req.body;
-
-  db
-    .query('UPDATE users SET first_name=$1, last_name=$2, age=$3 WHERE id=$4;', [name, surname, age, id])
-    .then(data => res.json(data))
-    .catch(e => next(e));
+const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, surname, age } = req.body;
+    
+    const user = await User.findByIdAndUpdate(id, { name, surname, age }, { new: true });
+    res.json({ success: true, msg: `user with id ${id} updated`, data: user })
+  } catch(err) {
+    next(err)
+  }
 };
 
 module.exports = {
